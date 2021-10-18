@@ -81,12 +81,12 @@ void serve_connection(int sockfd) {
     char verb[4];  // len("GET ")
     int len = recv(sockfd, verb, sizeof(verb), 0);
     if (strncmp(verb, "GET", 3) != 0) {
-        method = "GET";
         printf("Unsupported HTTP verb");
         write(sockfd, SERVER_ERROR, strlen(SERVER_ERROR));
         close(sockfd);
         return;
     }
+    method = "GET";
 
     while (1) {
         char buf[1024];
