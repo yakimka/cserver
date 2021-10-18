@@ -110,7 +110,5 @@ void serve_connection(int sockfd) {
                 strncat(path, &buf[i], 1);
             }
         }
-        close(sockfd);
-        return;
     }
 }
