@@ -1,4 +1,4 @@
-#include <errno.h>
+#include <limits.h>
 #include <netinet/in.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,7 +28,7 @@ int main(int argc, char const *argv[]) {
     address.sin_port = htons(PORT);
     memset(address.sin_zero, '\0', sizeof(address.sin_zero));
 
-    // Creating socker file descriptor
+    // Creating socket file descriptor
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
     if (server_fd < 0) {
         handle_error("In socket");
@@ -44,7 +44,6 @@ int main(int argc, char const *argv[]) {
         handle_error("In listen");
     }
 
-    long valread;
     while (1) {
         printf("\n---Waiting for new connection---\n\n");
 
@@ -75,18 +74,21 @@ void serve_connection(int sockfd) {
     //   if (send(sockfd, "*", 1, 0) < 1) {
     //     handle_error("send");
     //   }
-    char *method;
-    char path[] = "";
+    char method[6] = {'\0'};
+    char path[PATH_MAX + 1] = {'\0'};
 
     char verb[4];  // len("GET ")
     int len = recv(sockfd, verb, sizeof(verb), 0);
+    if (len < 0) {
+        handle_error("recv");
+    }
     if (strncmp(verb, "GET", 3) != 0) {
         printf("Unsupported HTTP verb");
         write(sockfd, SERVER_ERROR, strlen(SERVER_ERROR));
         close(sockfd);
         return;
     }
-    method = "GET";
+    strcpy(method, "GET");
 
     while (1) {
         char buf[1024];
@@ -100,14 +102,14 @@ void serve_connection(int sockfd) {
 
         for (int i = 0; i < len; ++i) {
             if (buf[i] == ' ') {
-                printf("PATH: %s\n", path);
+                printf("METHOD: %s\nPATH: %s\n", method, path);
                 // TODO read file path and send response
                 write(sockfd, HELLO, strlen(HELLO));
                 close(sockfd);
                 return;
             } else {
                 // append symbol to path
-                strncat(path, &buf[i], 1);
+                strncat(path, &buf[i], sizeof(char));
             }
         }
     }

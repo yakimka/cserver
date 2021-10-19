@@ -1,0 +1,5 @@
+name: Common test data
+description: Common test data
+
+variables:
+  host: 'http://localhost:8080'
