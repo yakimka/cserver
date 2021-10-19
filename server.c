@@ -84,7 +84,7 @@ void serve_connection(int sockfd) {
     }
     if (strncmp(verb, "GET", 3) != 0) {
         printf("Unsupported HTTP verb");
-        write(sockfd, SERVER_ERROR, strlen(SERVER_ERROR));
+        send(sockfd, SERVER_ERROR, strlen(SERVER_ERROR), 0);
         close(sockfd);
         return;
     }
@@ -104,7 +104,7 @@ void serve_connection(int sockfd) {
             if (buf[i] == ' ') {
                 printf("METHOD: %s\nPATH: %s\n", method, path);
                 // TODO read file path and send response
-                write(sockfd, HELLO, strlen(HELLO));
+                send(sockfd, HELLO, strlen(HELLO), 0);
                 close(sockfd);
                 return;
             } else {
