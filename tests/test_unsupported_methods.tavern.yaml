@@ -1,0 +1,81 @@
+test_name: Test unsupported methods
+
+stages:
+  - name: POST requests is not supported
+    request:
+      url: "{host}/index.html"
+      method: POST
+    response:
+      status_code: 500
+      verify_response_with:
+        function: testing_utils:check_text
+        extra_kwargs:
+          text: "Server Error"
+  
+  - name: PUT requests is not supported
+    request:
+      url: "{host}/index.html"
+      method: PUT
+    response:
+      status_code: 500
+      verify_response_with:
+        function: testing_utils:check_text
+        extra_kwargs:
+          text: "Server Error"
+
+  - name: PATCH requests is not supported
+    request:
+      url: "{host}/index.html"
+      method: PATCH
+    response:
+      status_code: 500
+      verify_response_with:
+        function: testing_utils:check_text
+        extra_kwargs:
+          text: "Server Error"
+
+  - name: PUT requests is not supported
+    request:
+      url: "{host}/index.html"
+      method: PUT
+    response:
+      status_code: 500
+      verify_response_with:
+        function: testing_utils:check_text
+        extra_kwargs:
+          text: "Server Error"
+
+  # TODO Error: Parse Error: Expected HTTP/ 
+  # - name: HEAD requests is not supported
+  #   request:
+  #     url: "{host}/index.html"
+  #     method: HEAD
+  #   response:
+  #     status_code: 500
+  #     verify_response_with:
+  #       function: testing_utils:check_text
+  #       extra_kwargs:
+  #         text: "Server Error"
+
+
+  - name: DELETE requests is not supported
+    request:
+      url: "{host}/index.html"
+      method: DELETE
+    response:
+      status_code: 500
+      verify_response_with:
+        function: testing_utils:check_text
+        extra_kwargs:
+          text: "Server Error"
+
+  - name: OPTIONS requests is not supported
+    request:
+      url: "{host}/index.html"
+      method: OPTIONS
+    response:
+      status_code: 500
+      verify_response_with:
+        function: testing_utils:check_text
+        extra_kwargs:
+          text: "Server Error"
